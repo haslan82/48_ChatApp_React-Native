@@ -26,17 +26,21 @@ const firebaseConfig = {
   appId: "1:498790247588:web:e6d9c8fe53fd74de840a31",
 };
 
-firebase.initializeApp(firebaseConfig);
+/* firebase.initializeApp(firebaseConfig); */
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
   const navigation = useNavigation();
   useEffect(() => {
-    const isLoggedIn = false;
-    if (!isLoggedIn) {
-      navigation.navigate("SignUp");
-    }
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        navigation.navigate("SignUp");
+      }
+    });
   }, []);
   return (
     <Tab.Navigator
