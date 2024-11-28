@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Router from './src/navigation/Router'
 
-const App = () => {
+const Chat = () => {
   return (
-    <Router/>
+    <View>
+      <Text>Chat</Text>
+    </View>
   )
 }
 
-export default App
+export default Chat
 
 const styles = StyleSheet.create({})
