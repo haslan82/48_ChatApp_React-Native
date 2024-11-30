@@ -1,3 +1,4 @@
+
 Merhaba Linkedin!
 
 Bugün, Udemig platformunda 400 saatlik eğitim sürecini başarıyla tamamladım ve sertifikamı aldım! 
