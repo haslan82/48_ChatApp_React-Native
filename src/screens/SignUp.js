@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import { Button, Subheading, TextInput } from "react-native-paper";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 
 const SignUp = () => {
+  const [name, setName]= useState('');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +45,13 @@ const SignUp = () => {
         </Subheading>
       )}
       <TextInput
+        style={{ marginTop: 16 }}
+        label="Name"
+        value={name}
+        onChangeText={(text) => setName(text)}
+     
+      />
+      <TextInput
         style={{ marginTop: 12 }}
         label="Email"
         value={email}
@@ -71,4 +79,4 @@ const SignUp = () => {
 
 export default SignUp;
 
-const styles = StyleSheet.create({});
+

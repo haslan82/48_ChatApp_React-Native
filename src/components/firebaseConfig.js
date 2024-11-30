@@ -1,9 +1,9 @@
-// Firebase modüllerini içe aktar
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Firebase yapılandırma
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyCejxR_xxiFkv8mXqTCUpSNMJY1g5vHLAs",
   authDomain: "chatapp-81ffb.firebaseapp.com",
@@ -13,8 +13,8 @@ const firebaseConfig = {
   appId: "1:498790247588:web:e6d9c8fe53fd74de840a31",
 };
 
-// Firebase uygulamasını başlat
-const app = initializeApp(firebaseConfig);
+// Firebase uygulamasını başlat (zaten başlatıldıysa tekrar başlatma)
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 // Firebase modüllerini dışa aktar
 export const auth = getAuth(app);
