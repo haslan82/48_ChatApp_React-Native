@@ -1,5 +1,4 @@
 import { StyleSheet, Text } from "react-native";
-
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -11,11 +10,12 @@ import Chat from "../screens/Chat";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Provider } from "react-native-paper";
 import { useEffect } from "react";
-
 import firebase from "firebase/compat/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { initializeApp } from "firebase/app";
+
+import { onAuthStateChanged } from "firebase/auth";
+import {auth,db} from "../components/firebaseConfig"
 
 const firebaseConfig = {
   apiKey: "AIzaSyCejxR_xxiFkv8mXqTCUpSNMJY1g5vHLAs",
@@ -36,12 +36,15 @@ const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   const navigation = useNavigation();
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    // Kullanıcı durumunu dinle
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
+        // Eğer kullanıcı giriş yapmamışsa "SignUp" ekranına yönlendir
         navigation.navigate("SignUp");
       }
     });
-  }, []);
+    return () => unsubscribe();
+  }, [navigation]);
   return (
     <Tab.Navigator
       screenOptions={{
