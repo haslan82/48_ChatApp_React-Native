@@ -38,7 +38,7 @@ const BottomTabs = () => {
         } else if (route.name === "Settings") {
           iconName = focused? "settings" : "settings-outline";
         }
-
+ const iconSize = focused ? 30 : size;
         return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}

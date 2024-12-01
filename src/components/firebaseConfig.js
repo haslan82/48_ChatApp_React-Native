@@ -4,6 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyCejxR_xxiFkv8mXqTCUpSNMJY1g5vHLAs",
   authDomain: "chatapp-81ffb.firebaseapp.com",

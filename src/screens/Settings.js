@@ -1,29 +1,48 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { Avatar, Button, Title } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native';
-import { auth } from '../components/firebaseConfig'; // Modern Firebase modülünü içe aktar
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Avatar, Button, Title } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "../components/firebaseConfig"; // Modern Firebase yapılandırması
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 const Settings = () => {
   const navigation = useNavigation();
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setName(user.displayName ?? " ");
+        setEmail(user.email ?? " ");
+      } else {
+        // Kullanıcı oturum açmadıysa giriş ekranına yönlendirin
+        navigation.navigate("SignIn");
+      }
+    });
+
+    return unsubscribe; // Bellek sızıntısını önlemek için aboneliği temizle
+  }, [navigation]);
+
   const handleSignOut = () => {
-    auth
-      .signOut()
+    signOut(auth)
       .then(() => {
-        // Başarıyla çıkış yapıldıktan sonra kullanıcıyı giriş ekranına yönlendirin
-        navigation.navigate('SignIn');
+        navigation.navigate("SignIn");
       })
       .catch((error) => {
-        console.error('Sign out error:', error.message);
+        console.error("Sign out error:", error.message);
       });
   };
 
   return (
-    <View style={{ alignItems: 'center', marginTop: 16 }}>
-      <Avatar.Text label="UN" />
-      <Title>UserName</Title>
-      <Title>user@name.com</Title>
+    <View style={{ alignItems: "center", marginTop: 16 }}>
+    <Avatar.Text label={name.split(' ').reduce((prev, current) => prev + current[0], "")} 
+      
+      />
+
+      <Title style={{color:'red'}}>{name}</Title>
+      <Title>{email}</Title>
       <Button onPress={handleSignOut}>Sign Out</Button>
     </View>
   );
