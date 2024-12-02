@@ -45,6 +45,7 @@ const BottomTabs = () => {
     >
       <Tab.Screen name="ChatList" component={ChatList} />
       <Tab.Screen name="Settings" component={Settings} />
+      
     </Tab.Navigator>
   );
 };

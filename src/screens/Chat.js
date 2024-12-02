@@ -1,14 +1,145 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+/* import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import firebase from "firebase/compat/app";
+import { GiftedChat } from "react-native-gifted-chat";
 
 const Chat = () => {
-  return (
-    <View>
-      <Text>Chat</Text>
-    </View>
-  )
+  const route = useRoute();
+  const [messages, setMessages] = useState([]);
+
+const [uid, setUID] = useState("");
+const [name, setName] = useState("");
+
+useEffect(()=>{
+  return firebase.auth().onAuthStateChanged((user)=>{
+    setUID(user.uid);
+    setName(user.displayName);
+  })
+},[])
+
+
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .doc("/chats/" + route.params.chatId)
+      .onSnapshot(()=>{
+setMessages(snapshot.data()?.messages ?? [])
+      });
+  }, [route?.params?.chatId]);
+
+
+const onSend = (m=[])=>{
+firebase.firestore().doc('chats/' + route.params.chatId).set({
+
+  messages: GiftedChat.append(messages, m),
+},{merge:true})
 }
 
-export default Chat
+  return (
+    <GiftedChat
+    messages={messages}
+    onSend={messages => onSend(messages)}
+    user={{
+      _id: uid,
+      name:name,
+    }}
+  />
+  );
+};
 
-const styles = StyleSheet.create({})
+export default Chat;
+
+const styles = StyleSheet.create({});
+ */
+
+
+
+import { StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { useRoute } from "@react-navigation/native";
+import { GiftedChat } from "react-native-gifted-chat";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getFirestore,
+  doc,
+  onSnapshot,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+
+const Chat = () => {
+  const route = useRoute();
+  const [messages, setMessages] = useState([]);
+  const [uid, setUID] = useState("");
+  const [name, setName] = useState("");
+
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // Kullanıcı oturumunu dinleme
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUID(user.uid);
+        setName(user.displayName || "Anonymous"); // Varsayılan ad
+      } else {
+        setUID("");
+        setName("");
+      }
+    });
+
+    return () => unsubscribe(); // Dinlemeyi temizle
+  }, [auth]);
+
+  // Firestore'dan mesajları dinleme
+  useEffect(() => {
+    if (!route.params?.chatId) return;
+
+    const chatDocRef = doc(db, "chats", route.params.chatId);
+    const unsubscribe = onSnapshot(
+      chatDocRef,
+      (snapshot) => {
+        if (snapshot.exists()) {
+          setMessages(snapshot.data()?.messages || []);
+        }
+      },
+      (error) => {
+        console.error("Mesajları alma hatası:", error);
+      }
+    );
+
+    return () => unsubscribe(); // Dinlemeyi temizle
+  }, [db, route?.params?.chatId]);
+
+  // Yeni mesaj gönderme
+  const onSend = async (newMessages = []) => {
+    if (!route.params?.chatId) return;
+
+    const chatDocRef = doc(db, "chats", route.params.chatId);
+
+    try {
+      await updateDoc(chatDocRef, {
+        messages: arrayUnion(...GiftedChat.append(messages, newMessages)),
+      });
+    } catch (error) {
+      console.error("Mesaj gönderme hatası:", error);
+    }
+  };
+
+  return (
+    <GiftedChat
+      messages={messages}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: uid,
+        name: name,
+      }}
+    />
+  );
+};
+
+export default Chat;
+
+const styles = StyleSheet.create({});

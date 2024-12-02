@@ -11,9 +11,9 @@ import { useNavigation } from "@react-navigation/native";
 
 
 const SignUp = () => {
-  const [name, setName]= useState('');
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName]= useState(" Hüseyin ASLAN");
+  const [email, setEmail] = useState("Haslan82@hotmail.com");
+  const [password, setPassword] = useState("111111");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigation = useNavigation();
@@ -29,8 +29,8 @@ const SignUp = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigation.navigate("SignIn"); // Kayıt başarılı olursa SignIn ekranına yönlendir
+      await createUserWithEmailAndPassword(auth, email, password,name);
+      navigation.navigate("Chat"); // Kayıt başarılı olursa SignIn ekranına yönlendir
     } catch (err) {
       setError(err.message);
       setIsLoading(false);

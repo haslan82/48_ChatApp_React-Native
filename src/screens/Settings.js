@@ -14,8 +14,8 @@ const Settings = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setName(user.displayName ?? " ");
-        setEmail(user.email ?? " ");
+        setName(user?.displayName ?? " ");
+        setEmail(user?.email ?? " ");
       } else {
         // Kullanıcı oturum açmadıysa giriş ekranına yönlendirin
         navigation.navigate("SignIn");
@@ -37,11 +37,11 @@ const Settings = () => {
 
   return (
     <View style={{ alignItems: "center", marginTop: 16 }}>
-    <Avatar.Text label={name.split(' ').reduce((prev, current) => prev + current[0], "")} 
+    <Avatar.Text label={name?.split(' ').reduce((prev, current) => prev + current[0], ' ')} 
       
       />
 
-      <Title style={{color:'red'}}>{name}</Title>
+      <Title style={{color:'black'}}>{name}</Title>
       <Title>{email}</Title>
       <Button onPress={handleSignOut}>Sign Out</Button>
     </View>
