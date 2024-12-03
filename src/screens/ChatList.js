@@ -50,7 +50,7 @@ const ChatList = () => {
         chatsList.push({ id: doc.id, ...doc.data() });
       });
       setChats(chatsList); // Verileri state'e kaydet
-      console.log("Chats: ", chatsList);
+       // console.log("Chats: ", chatsList);
     });
 
     return () => unsubscribe(); // Bileşen unmount olduğunda dinlemeyi durdur
@@ -85,7 +85,12 @@ const ChatList = () => {
           <List.Item
           onPress={(()=>navigation.navigate('Chat', {chatId:chat.id}))}
             title={chat.users.find((x) => x !== email)}
-            description="Hi, I will be waiting for you"
+            // description="Hi, I will be waiting for you"
+         
+            description={(chat.messages?.[chat.messages.length - 1]?.text) ?? "..."}
+
+
+
             left={() => (
               <Avatar.Text
                 label={chat.users
@@ -128,7 +133,7 @@ const ChatList = () => {
         style={{
           backgroundColor: "aqua",
           position: "absolute",
-          bottom: 100,
+          bottom: 40,
           right: 26,
         }}
         onPress={() => setIsDialogVisible(true)}

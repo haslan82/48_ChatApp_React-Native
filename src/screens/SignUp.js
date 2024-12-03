@@ -30,7 +30,7 @@ const SignUp = () => {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password,name);
-      navigation.navigate("Chat"); // Kayıt başarılı olursa SignIn ekranına yönlendir
+      navigation.navigate("Main"); // Kayıt başarılı olursa SignIn ekranına yönlendir
     } catch (err) {
       setError(err.message);
       setIsLoading(false);

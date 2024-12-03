@@ -10,7 +10,7 @@ import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import Chat from "../screens/Chat";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Provider } from "react-native-paper";
+import { MD3LightTheme, Provider } from "react-native-paper";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,10 +50,22 @@ const BottomTabs = () => {
   );
 };
 
+
+const theme = {
+  ...MD3LightTheme, // or MD3DarkTheme
+  roundness: 2,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#3498db',
+    secondary: '#f1c40f',
+    tertiary: '#a1b2c3',
+  },
+};
+
 const Router = () => {
   return (
     <NavigationContainer>
-      <Provider>
+      <Provider theme={theme}>
         <Stack.Navigator>
           <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
           <Stack.Screen name="Chat" component={Chat} 
