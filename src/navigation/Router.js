@@ -56,7 +56,9 @@ const Router = () => {
       <Provider>
         <Stack.Navigator>
           <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
-          <Stack.Screen name="Chat" component={Chat} />
+          <Stack.Screen name="Chat" component={Chat} 
+    
+          />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>

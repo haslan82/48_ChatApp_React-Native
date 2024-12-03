@@ -56,7 +56,7 @@ const styles = StyleSheet.create({});
 
 
 
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { GiftedChat } from "react-native-gifted-chat";
@@ -129,14 +129,18 @@ const Chat = () => {
   };
 
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={(messages) => onSend(messages)}
-      user={{
-        _id: uid,
-        name: name,
-      }}
-    />
+  <View style={{flex:1, marginBottom:50}}>
+      <GiftedChat
+
+// Mesajlarda ki tarih ile alakalı fonksiyon
+  messages={messages.map(x=>({...x, createdAt: x.createdAt?.toDate()}))}
+  onSend={(messages) => onSend(messages)}
+  user={{
+    _id: uid,
+    name: name,
+  }}
+/>
+</View>
   );
 };
 

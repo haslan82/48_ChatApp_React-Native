@@ -12,8 +12,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const SignIn = () => {
  
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("Haslan82@hotmail.com");
+  const [password, setPassword] = useState("111111");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigation = useNavigation();
